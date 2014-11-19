@@ -1,17 +1,36 @@
-CC=msp430-gcc
-CFLAGS=-c -Wall
-CFLAGS += -I.././build/include/arch/
-CFLAGS += -I.././build/include/
+CROSS_COMPILE?=msp430-
+AR:=$(CROSS_COMPILE)ar
+LD:=$(CROSS_COMPILE)ld
+CC:=$(CROSS_COMPILE)gcc
+
+PICODIR?=../../lib/picotcp
+PREFIX?=$(PWD)/build
+
+LIBNAME:=libpico_msp430_tiny.a
+
+CFLAGS =-c -Wall
+CFLAGS += -I$(PREFIX)/include/arch/
+CFLAGS += -I$(PREFIX)/include/
+CFLAGS += -I$(PREFIX)/lib/
+
+LDFLAGS += -L$(PREFIX)
 
 SOURCES=pico_msp430_tiny.c
 
-all: libpico_msp430_tiny.a
+LIB_OBJ=pico_msp430_tiny.o
+LIB_AR=$(PREFIX)/lib/$(LIBNAME)
 
-pico_msp430_tiny.o: pico_msp430_tiny.c
-	$(CC) $(CFLAGS) pico_msp430_tiny.c
+all: libpico_msp430_tiny
 
-libpico_msp430_tiny.a: pico_msp430_tiny.o
-	ar cr libpico_msp430_tiny.a pico_msp430_tiny.o
+libpico_msp430_tiny:
+	@make -C $(PICODIR) deps PREFIX=$(PREFIX)
+	@cp -f $(PICODIR)/include/*.h $(PREFIX)/include
+	@cp -fa $(PICODIR)/include/arch $(PREFIX)/include
+	@cp -f $(PICODIR)/modules/*.h $(PREFIX)/include
+	@$(CC) $(CFLAGS) $(SOURCES) -o $(PREFIX)/lib/$(LIB_OBJ)
+	$(AR) cr $(LIB_AR) $(PREFIX)/lib/$(LIB_OBJ)
+
 clean:
-	rm -rf pico_msp430_tiny.o 
-	rm -rf *.o 
+	rm -rf $(PREFIX)
+
+FORCE:
