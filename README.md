@@ -35,7 +35,7 @@ Install the tinyOS dependencies:
 
 In order to build your first Telosb image, execute the tinyOS make command in the application folder
 
-    cd /app_olsrsetup
+    cd ../../../app_olsrsetup
     make telosb
 
 if all goes well, a main.exe should now be found in ./build/telosb/
