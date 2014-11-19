@@ -1,6 +1,10 @@
 COMPONENT=PicoAppC
 BOARDLIBDIR=../lib/boardlib
 
+TINYOS_ROOT_DIR?=../lib/tinyos-main
+include $(TINYOS_ROOT_DIR)/Makefile.include
+MAKERULES=$(TINYOS_ROOT_DIR)/support/make/Makerules
+
 PICODIR=../lib/picotcp
 PREFIX?=$(PWD)/build
 PRINTF_ENABLED?=0
