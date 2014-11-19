@@ -1,5 +1,5 @@
 COMPONENT=PicoAppC
-BOARDLIBDIR=boardlib
+BOARDLIBDIR=../lib/boardlib
 
 PICODIR=../lib/picotcp
 PREFIX?=$(PWD)/build
